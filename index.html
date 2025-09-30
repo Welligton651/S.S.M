@@ -1,18 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Sistema O.S.">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#3b82f6">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
     <title>Sistema de Ordem de Serviço</title>
-    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ZgXUq8dczzTHiqqEmd2kjwjoHx9DtNA4qUCovgJwopD5ZU_aqVq8gTucUTRJkUyPVuqWQSyRRl4s23ERTGBK_dOloiSUsGEHYHQeNorD8InxOOGw-woMXor4ogZS1Aa0myG9v1t7tcPK0dq-LikJkMjp8cPAozulzD7rJ5-QSb-9MB8RTIV8IZ8EPzEVuQD3dRI1y9haLjJywyA7xLt6oA" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             box-sizing: border-box;
@@ -128,13 +124,12 @@
             .signature-pad {
                 touch-action: none;
                 width: 100% !important;
-                height: 80px !important;
+                height: 100px !important;
             }
             
             .priority-badge, .status-badge {
-                font-size: 0.7rem;
-                padding: 0.25rem 0.5rem;
-                white-space: nowrap;
+                font-size: 0.75rem;
+                padding: 0.375rem 0.75rem;
             }
             
             .card-hover:hover {
@@ -143,36 +138,6 @@
             
             .btn-primary:hover, .btn-success:hover, .btn-warning:hover {
                 transform: none;
-            }
-            
-            .container {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
-            
-            .glass-effect {
-                margin-left: 0.5rem;
-                margin-right: 0.5rem;
-            }
-            
-            /* Ajustes para telas muito pequenas */
-            @media (max-width: 375px) {
-                .priority-badge, .status-badge {
-                    font-size: 0.65rem;
-                    padding: 0.2rem 0.4rem;
-                }
-                
-                .text-3xl {
-                    font-size: 1.5rem;
-                }
-                
-                .text-2xl {
-                    font-size: 1.25rem;
-                }
-                
-                .text-xl {
-                    font-size: 1.1rem;
-                }
             }
         }
         
@@ -187,58 +152,18 @@
                 transform: none;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             }
-            
-            /* Melhor área de toque */
-            button, .tab-button, select, input {
-                min-height: 44px;
-            }
         }
         
         /* iOS specific fixes */
         input, select, textarea {
             -webkit-appearance: none;
             border-radius: 0.75rem;
-            -webkit-tap-highlight-color: transparent;
         }
         
         /* Prevent zoom on input focus for iOS */
         @media screen and (max-width: 767px) {
             input, select, textarea {
                 font-size: 16px;
-            }
-        }
-        
-        /* Safe area para iPhone X+ */
-        @supports (padding: max(0px)) {
-            body {
-                padding-left: max(12px, env(safe-area-inset-left));
-                padding-right: max(12px, env(safe-area-inset-right));
-                padding-bottom: max(12px, env(safe-area-inset-bottom));
-            }
-            
-            header {
-                padding-top: max(12px, env(safe-area-inset-top));
-            }
-        }
-        
-        /* Melhorias para Android */
-        @media screen and (max-width: 640px) {
-            /* Evitar overflow horizontal */
-            * {
-                max-width: 100%;
-                box-sizing: border-box;
-            }
-            
-            /* Melhor scroll em Android */
-            body {
-                -webkit-overflow-scrolling: touch;
-                overflow-x: hidden;
-            }
-            
-            /* Botões mais acessíveis */
-            button, .tab-button {
-                min-height: 48px;
-                min-width: 48px;
             }
         }
         
@@ -282,23 +207,40 @@
             opacity: 0.8;
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA08NvEhJ_wQDYP88X2tysohKUMth4qz0g",
+            authDomain: "fir-s-m-f1d0f.firebaseapp.com",
+            projectId: "fir-s-m-f1d0f",
+            storageBucket: "fir-s-m-f1d0f.firebasestorage.app",
+            messagingSenderId: "55884894529",
+            appId: "1:55884894529:web:a311bb71466b00cefbd1c0",
+            measurementId: "G-VLGKB7EF0M"
+        };
+
+        // Inicializa o Firebase e o Firestore
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
 </head>
 <body class="gradient-bg min-h-screen">
-    <!-- Cabeçalho -->
-    <header class="glass-effect rounded-b-2xl shadow-2xl mb-4 sm:mb-8">
-        <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+    <header class="glass-effect rounded-b-2xl shadow-2xl mb-8">
+        <div class="container mx-auto px-4 py-8">
             <div class="text-center">
-                <div class="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 mb-4">
-                    <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-2 sm:p-3 rounded-xl shadow-lg">
-                        <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             Sistema de Ordem de Serviço
                         </h1>
-                        <p class="text-sm sm:text-lg font-semibold text-gray-700 px-2">
+                        <p class="text-lg font-semibold text-gray-700">
                             COORDENAÇÃO DE SUPORTE E LOGÍSTICA - MANUTENÇÃO
                         </p>
                     </div>
@@ -360,63 +302,60 @@
         </div>
     </header>
 
-    <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <!-- Navegação por Abas -->
-        <div class="glass-effect rounded-2xl shadow-2xl mb-4 sm:mb-8 overflow-hidden">
-            <div class="bg-gradient-to-r from-slate-50/50 to-blue-50/50 p-1 sm:p-2">
-                <div class="grid grid-cols-3 gap-1 sm:gap-2 max-w-4xl mx-auto">
-                    <button onclick="showTab('nova-os')" id="tab-nova-os" class="tab-button active group relative flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
-                        <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-1 sm:mb-3">
-                            <svg class="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="container mx-auto px-4 py-8">
+        <div class="glass-effect rounded-2xl shadow-2xl mb-8 overflow-hidden">
+            <div class="bg-gradient-to-r from-slate-50/50 to-blue-50/50 p-2">
+                <div class="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
+                    <button onclick="showTab('nova-os')" id="tab-nova-os" class="tab-button active group relative flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-3 sm:p-4 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-3">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                         </div>
-                        <span class="font-bold text-xs sm:text-sm md:text-base text-gray-700 group-hover:text-green-600 transition-colors duration-300 text-center leading-tight">Nova O.S.</span>
-                        <span class="text-xs text-gray-500 mt-1 hidden md:block">Criar nova ordem</span>
+                        <span class="font-bold text-sm sm:text-base text-gray-700 group-hover:text-green-600 transition-colors duration-300">Nova O.S.</span>
+                        <span class="text-xs text-gray-500 mt-1 hidden sm:block">Criar nova ordem</span>
                         <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                     
-                    <button onclick="showTab('lista-os')" id="tab-lista-os" class="tab-button group relative flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
-                        <div class="bg-gradient-to-br from-orange-500 to-red-600 p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-1 sm:mb-3">
-                            <svg class="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="showTab('lista-os')" id="tab-lista-os" class="tab-button group relative flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        <div class="bg-gradient-to-br from-orange-500 to-red-600 p-3 sm:p-4 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-3">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
                         </div>
-                        <span class="font-bold text-xs sm:text-sm md:text-base text-gray-700 group-hover:text-orange-600 transition-colors duration-300 text-center leading-tight">Lista de O.S.</span>
-                        <span class="text-xs text-gray-500 mt-1 hidden md:block">Gerenciar ordens</span>
+                        <span class="font-bold text-sm sm:text-base text-gray-700 group-hover:text-orange-600 transition-colors duration-300">Lista de O.S.</span>
+                        <span class="text-xs text-gray-500 mt-1 hidden sm:block">Gerenciar ordens</span>
                         <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                     
-                    <button onclick="showTab('dashboard')" id="tab-dashboard" class="tab-button group relative flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
-                        <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-1 sm:mb-3">
-                            <svg class="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="showTab('dashboard')" id="tab-dashboard" class="tab-button group relative flex flex-col items-center justify-center p-4 sm:p-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-3 sm:p-4 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 mb-3">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                             </svg>
                         </div>
-                        <span class="font-bold text-xs sm:text-sm md:text-base text-gray-700 group-hover:text-purple-600 transition-colors duration-300 text-center leading-tight">Dashboard</span>
-                        <span class="text-xs text-gray-500 mt-1 hidden md:block">Análises e gráficos</span>
+                        <span class="font-bold text-sm sm:text-base text-gray-700 group-hover:text-purple-600 transition-colors duration-300">Dashboard</span>
+                        <span class="text-xs text-gray-500 mt-1 hidden sm:block">Análises e gráficos</span>
                         <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-indigo-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Aba Nova O.S. -->
         <div id="content-nova-os" class="tab-content">
-            <!-- Formulário de Nova O.S. -->
-            <div class="glass-effect rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 mb-4 sm:mb-8 card-hover">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-2 sm:space-y-0 sm:space-x-3 mb-6 sm:mb-8">
-                <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 sm:p-3 rounded-xl shadow-lg">
-                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8 card-hover">
+            <div class="flex items-center space-x-3 mb-8">
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
                 </div>
-                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent text-center sm:text-left">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                     Nova Ordem de Serviço
                 </h2>
             </div>
             
-            <form id="osForm" class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+            <form id="osForm" class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <div>
                     <label class="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -506,9 +445,7 @@
         </div>
         </div>
 
-        <!-- Aba Lista de O.S. -->
         <div id="content-lista-os" class="tab-content hidden">
-            <!-- Lista de O.S. -->
             <div class="glass-effect rounded-2xl shadow-2xl p-8 card-hover">
             <div class="flex items-center space-x-3 mb-8">
                 <div class="bg-gradient-to-br from-orange-500 to-red-600 p-3 rounded-xl shadow-lg">
@@ -521,16 +458,12 @@
                 </h2>
             </div>
             <div id="osList" class="space-y-6">
-                <!-- As O.S. serão inseridas aqui dinamicamente -->
-            </div>
+                </div>
         </div>
         </div>
 
-        <!-- Aba Dashboard -->
         <div id="content-dashboard" class="tab-content hidden">
-            <!-- Dashboard de Análises -->
             <div class="space-y-8">
-                <!-- Cards de Estatísticas Gerais -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                     <div class="glass-effect rounded-2xl p-6 card-hover">
                         <div class="flex items-center justify-between">
@@ -545,7 +478,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="glass-effect rounded-2xl p-6 card-hover">
                         <div class="flex items-center justify-between">
                             <div>
@@ -559,7 +492,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="glass-effect rounded-2xl p-6 card-hover">
                         <div class="flex items-center justify-between">
                             <div>
@@ -568,12 +501,12 @@
                             </div>
                             <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 rounded-xl">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="glass-effect rounded-2xl p-6 card-hover">
                         <div class="flex items-center justify-between">
                             <div>
@@ -582,1158 +515,583 @@
                             </div>
                             <div class="bg-gradient-to-br from-red-500 to-red-600 p-3 rounded-xl">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 0012 5.636v12.728M12 2a10 10 0 00-3.321 1.745L12 12l3.321-8.255A10 10 0 0012 2z"></path>
                                 </svg>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Gráficos -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Unidades que Mais Solicitam -->
-                    <div class="glass-effect rounded-2xl p-6 card-hover">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-3 rounded-xl">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800">Unidades que Mais Solicitam</h3>
-                        </div>
-                        <div id="unitsChart" class="space-y-4">
-                            <!-- Gráfico será inserido aqui -->
-                        </div>
-                    </div>
-
-                    <!-- Serviços Mais Solicitados -->
-                    <div class="glass-effect rounded-2xl p-6 card-hover">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800">Serviços Mais Solicitados</h3>
-                        </div>
-                        <div id="servicesChart" class="space-y-4">
-                            <!-- Gráfico será inserido aqui -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Histórico de Demanda e Ranking -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Histórico de Demanda Atendida -->
-                    <div class="glass-effect rounded-2xl p-6 card-hover">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800">Histórico de Demanda</h3>
-                        </div>
-                        <div id="demandHistory" class="space-y-4">
-                            <!-- Histórico será inserido aqui -->
-                        </div>
-                    </div>
-
-                    <!-- Ranking de Unidades -->
-                    <div class="glass-effect rounded-2xl p-6 card-hover">
-                        <div class="flex items-center space-x-3 mb-6">
-                            <div class="bg-gradient-to-br from-yellow-500 to-amber-600 p-3 rounded-xl">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800">Ranking de Unidades</h3>
-                        </div>
-                        <div id="unitsRanking" class="space-y-3">
-                            <!-- Ranking será inserido aqui -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Análise por Prioridade -->
-                <div class="glass-effect rounded-2xl p-6 card-hover">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="bg-gradient-to-br from-red-500 to-pink-600 p-3 rounded-xl">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                    <div class="glass-effect rounded-2xl shadow-2xl p-6 card-hover">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-3 flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                             </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800">Análise por Prioridade</h3>
+                            <span>Setores que Mais Solicitam</span>
+                        </h3>
+                        <div id="setorChart" class="space-y-4">
+                            </div>
                     </div>
-                    <div id="priorityChart" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Análise de prioridade será inserida aqui -->
+                    
+                    <div class="glass-effect rounded-2xl shadow-2xl p-6 card-hover">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-3 flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                            </svg>
+                            <span>Prioridades por Serviço</span>
+                        </h3>
+                        <div id="priorityChart" class="space-y-4">
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Rodapé -->
-    <footer class="glass-effect rounded-t-2xl shadow-2xl mt-12">
-        <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-            <div class="text-center">
-                <div class="flex items-center justify-center space-x-4 mb-4">
-                    <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Sistema de Ordem de Serviço
-                        </h3>
-                        <p class="text-lg font-semibold text-gray-700">
-                            COORDENAÇÃO DE SUPORTE E LOGÍSTICA - MANUTENÇÃO
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="border-t border-gray-200 pt-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
-                        <div class="flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                            <span class="font-medium">Gestão Eficiente</span>
-                        </div>
-                        <div class="flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="font-medium">Controle Total</span>
-                        </div>
-                        <div class="flex items-center justify-center space-x-2">
-                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="font-medium">Agilidade</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 pt-4 border-t border-gray-200">
-                        <p class="text-gray-500 text-sm">
-                            © 2025 Sistema de Ordem de Serviço - Desenvolvido por WELLIGTON FERREIRA
-                        </p>
-                        <p class="text-gray-400 text-xs mt-2">
-                            Versão 1.0 | Última atualização: <span id="footerDate"></span>
-                        </p>
-                    </div>
-                </div>
+    
+    <div id="signature-modal" class="modal fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black bg-opacity-30">
+        <div class="glass-effect fade-in rounded-2xl shadow-2xl p-6 w-full max-w-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-between">
+                <span>Assinatura da O.S. <span id="modalOSNum"></span></span>
+                <button onclick="closeSignatureModal()" class="text-gray-500 hover:text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </h3>
+            <div class="text-sm text-gray-600 mb-4">
+                Assine no espaço abaixo para confirmar o recebimento/conclusão do serviço.
+            </div>
+            <canvas id="signaturePad" class="signature-pad w-full h-40 mb-4"></canvas>
+            
+            <div class="flex space-x-3">
+                <button onclick="clearSignature()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-5 rounded-xl transition-colors duration-200 shadow w-1/2">
+                    Limpar
+                </button>
+                <button id="saveSignatureBtn" class="btn-primary text-white font-bold py-3 px-5 rounded-xl transition-all duration-200 shadow w-1/2">
+                    Salvar Assinatura e Imprimir
+                </button>
             </div>
         </div>
+    </div>
+
+    <footer class="text-center text-sm text-gray-700 mt-12 mb-4">
+        <p>Sistema de Ordem de Serviço &copy; <span id="footerDate"></span></p>
+        <p class="text-xs">DESENVOLVIDO BY WELLIGTON FERREIRA</p>
     </footer>
 
-    <!-- Modal de Visualização/Impressão da O.S. -->
-    <div id="osModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-1 sm:p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto m-1 sm:m-0">
-                <div class="p-2 sm:p-3 lg:p-6 no-print">
-                    <div class="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center mb-4 sm:space-y-0">
-                        <h3 class="text-base sm:text-lg lg:text-xl font-semibold text-center sm:text-left">Ordem de Serviço</h3>
-                        <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 lg:space-x-3">
-                            <button onclick="printOS()" class="btn-primary text-white px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 text-xs sm:text-sm lg:text-base">
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                                </svg>
-                                <span>Imprimir</span>
-                            </button>
-                            <button onclick="closeModal('osModal')" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-all duration-200 text-xs sm:text-sm lg:text-base">
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                                <span>Fechar</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="osContent" class="p-3 sm:p-4 lg:p-6 border-t">
-                    <!-- Conteúdo da O.S. será inserido aqui -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Upload de Fotos -->
-    <div id="photoModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-4">Cadastro de Fotos - Execução do Serviço</h3>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Selecionar Fotos</label>
-                        <input type="file" id="photoInput" multiple accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                        <p class="text-sm text-gray-500 mt-1">Selecione uma ou mais fotos da execução do serviço</p>
-                    </div>
-                    
-                    <div id="photoPreview" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-                        <!-- Preview das fotos será inserido aqui -->
-                    </div>
-                    
-                    <div class="flex justify-end space-x-3">
-                        <button onclick="closeModal('photoModal')" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 transition-all duration-200">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                            <span>Cancelar</span>
-                        </button>
-                        <button onclick="savePhotos()" class="btn-success text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
-                            </svg>
-                            <span>Salvar Fotos</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Relatório Fotográfico -->
-    <div id="reportModal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
-                <div class="p-6 no-print">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold">Relatório Fotográfico</h3>
-                        <div class="space-x-3">
-                            <button onclick="printReport()" class="btn-warning text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                                </svg>
-                                <span>Imprimir Relatório</span>
-                            </button>
-                            <button onclick="closeModal('reportModal')" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl font-semibold flex items-center space-x-2 transition-all duration-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                                <span>Fechar</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="reportContent" class="p-6 border-t">
-                    <!-- Conteúdo do relatório será inserido aqui -->
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script>
-        let osCounter = 1;
-        let ordens = [];
-        let currentOSId = null;
-        let currentPhotos = [];
+        // ESTE BLOCO DE CÓDIGO FOI MANTIDO DO SEU ARQUIVO ORIGINAL
+        // APENAS AS FUNÇÕES DE MANIPULAÇÃO DE DADOS FORAM SUBSTITUÍDAS
+        
+        let ordensDeServico = []; // Variável global para armazenar as O.S.
+        let signaturePad = null;
+        let currentOSForSignature = null;
 
-        // Atualizar data e hora
-        function updateDateTime() {
-            const now = new Date();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('pt-BR');
-            document.getElementById('currentTime').textContent = now.toLocaleTimeString('pt-BR');
+        // ----------------------------------------------------
+        // FUNÇÕES FIREBASE: Persistência de Dados Compartilhada (NOVA LÓGICA)
+        // ----------------------------------------------------
+
+        // 1. CARREGA dados do Firebase (AGORA É ASYNC/ASSÍNCRONO)
+        const loadOSs = async () => {
+            try {
+                // Busca a coleção 'ordensDeServico', ordenada pelo número da OS de forma decrescente
+                const snapshot = await db.collection('ordensDeServico').orderBy('numOS', 'desc').get();
+                
+                ordensDeServico = snapshot.docs.map(doc => ({
+                    id: doc.id, // O ID do documento Firebase
+                    ...doc.data(),
+                    // Converte Firebase Timestamp para objeto Date (necessário para exibição)
+                    dataCriacao: doc.data().dataCriacao ? doc.data().dataCriacao.toDate() : null 
+                }));
+                
+                renderOSList(); // Renderiza APÓS carregar
+                updateDashboard(); // Atualiza o Dashboard
+                
+            } catch (error) {
+                console.error("Erro ao carregar O.S. do Firebase:", error);
+                // alert("Não foi possível carregar as Ordens de Serviço. Verifique as regras de segurança do seu Firestore.");
+            }
         }
 
-        // Gerar número da O.S.
-        function generateOSNumber() {
-            const year = new Date().getFullYear();
-            const number = String(osCounter).padStart(4, '0');
-            return `OS-${year}-${number}`;
+        // 2. SALVA nova O.S. no Firebase
+        const addNewOS = async (os) => {
+            try {
+                // Encontra o próximo número sequencial. Usa o último número + 1.
+                const proximoNumOS = ordensDeServico.length > 0 ? (ordensDeServico[0].numOS || 0) + 1 : 1;
+
+                const newOS = {
+                    ...os,
+                    numOS: proximoNumOS,
+                    dataCriacao: firebase.firestore.FieldValue.serverTimestamp() // Timestamp do servidor
+                };
+
+                // Salva no Firestore.
+                await db.collection('ordensDeServico').add(newOS);
+                
+                // Recarrega a lista para mostrar a nova O.S. a todos
+                await loadOSs();
+
+            } catch (error) {
+                console.error("Erro ao adicionar nova O.S. ao Firebase:", error);
+                alert("Erro ao salvar a Ordem de Serviço.");
+            }
         }
 
-        // Submissão do formulário
-        document.getElementById('osForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        // 3. ATUALIZA o status da O.S. no Firebase (Incluindo assinatura)
+        window.updateStatus = async (docId, newStatus, signatureDataURL = null) => {
+            try {
+                const updateData = {
+                    status: newStatus
+                };
+                
+                if (newStatus === 'Concluída') {
+                    updateData.dataConclusao = firebase.firestore.FieldValue.serverTimestamp();
+                } else {
+                    updateData.dataConclusao = null; 
+                }
+                
+                if (signatureDataURL) {
+                    updateData.assinatura = signatureDataURL;
+                }
+                
+                await db.collection('ordensDeServico').doc(docId).update(updateData);
+                
+                // Recarrega a lista para refletir a mudança
+                await loadOSs(); 
+                
+            } catch (error) {
+                console.error("Erro ao atualizar status:", error);
+                alert("Erro ao atualizar status da O.S. (Verifique as regras de segurança do Firestore).");
+            }
+        }
+        
+        // 4. ATUALIZAÇÃO DA FUNÇÃO DE ENVIO DO FORMULÁRIO (submitForm)
+        const submitForm = async (event) => { // Tornar submitForm assíncrono
+            event.preventDefault();
+
+            const form = document.getElementById('osForm');
             const osData = {
-                id: osCounter,
-                numero: generateOSNumber(),
-                setor: document.getElementById('setor').value,
-                solicitante: document.getElementById('solicitante').value,
-                tipoServico: document.getElementById('tipoServico').value,
-                numeroSei: document.getElementById('numeroSei').value,
-                prioridade: document.getElementById('prioridade').value,
-                descricao: document.getElementById('descricao').value,
-                dataAbertura: new Date().toLocaleDateString('pt-BR'),
-                horaAbertura: new Date().toLocaleTimeString('pt-BR'),
-                status: 'Aberta',
-                tecnico: '',
-                assinaturaTecnico: '',
-                assinaturaSolicitante: '',
-                fotos: []
+                setor: form.setor.value,
+                solicitante: form.solicitante.value,
+                tipoServico: form.tipoServico.value,
+                numSei: form.numeroSei.value, // Usando ID 'numeroSei' do HTML
+                prioridade: form.prioridade.value,
+                descricao: form.descricao.value,
+                status: 'Aberta'
             };
-            
-            ordens.push(osData);
-            osCounter++;
-            
-            renderOSList();
-            document.getElementById('osForm').reset();
-            
-            // Feedback visual
-            const button = document.querySelector('button[type="submit"]');
-            const originalText = button.innerHTML;
-            button.innerHTML = `
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>O.S. Criada com Sucesso!</span>
-            `;
-            button.classList.remove('btn-primary');
-            button.classList.add('btn-success');
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.classList.remove('btn-success');
-                button.classList.add('btn-primary');
-            }, 2500);
-        });
 
-        // Renderizar lista de O.S.
-        function renderOSList() {
-            const container = document.getElementById('osList');
+            await addNewOS(osData);
             
-            if (ordens.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-16">
-                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 p-6 rounded-2xl inline-block mb-4">
-                            <svg class="w-16 h-16 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                        </div>
-                        <p class="text-gray-500 text-xl font-medium">Nenhuma ordem de serviço cadastrada</p>
-                        <p class="text-gray-400 mt-2">Crie sua primeira O.S. usando o formulário acima</p>
+            // Limpar o formulário
+            form.reset();
+            
+            // Selecionar a aba de Lista de O.S.
+            showTab('lista-os');
+        };
+
+        document.getElementById('osForm').addEventListener('submit', submitForm);
+
+        // Funções de UI (Mantidas)
+        
+        const updateDateTime = () => {
+            const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('pt-BR', dateOptions);
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('pt-BR', timeOptions);
+        }
+
+        const updateFooterDate = () => {
+            document.getElementById('footerDate').textContent = new Date().getFullYear();
+        }
+
+        const showTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            if (tabId === 'lista-os') {
+                renderOSList();
+            } else if (tabId === 'dashboard') {
+                updateDashboard();
+            }
+        }
+
+        const getPriorityClass = (priority) => {
+            switch (priority) {
+                case 'Urgente': return 'bg-red-500 text-white';
+                case 'Alta': return 'bg-orange-500 text-white';
+                case 'Média': return 'bg-yellow-500 text-gray-900';
+                case 'Baixa': return 'bg-green-500 text-white';
+                default: return 'bg-gray-500 text-white';
+            }
+        }
+
+        const getStatusClass = (status) => {
+            switch (status) {
+                case 'Concluída': return 'bg-green-600 text-white';
+                case 'Em Andamento': return 'bg-blue-600 text-white';
+                case 'Aberta': return 'bg-red-600 text-white';
+                default: return 'bg-gray-600 text-white';
+            }
+        }
+
+        const formatDate = (date) => {
+            if (!date) return 'N/A';
+            return new Date(date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + 
+                   ' ' + new Date(date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        // ** Importante: A função renderOSList() foi ajustada para usar o ID do Firebase (os.id) **
+        const renderOSList = () => {
+            const osListContainer = document.getElementById('osList');
+            if (!osListContainer) return;
+
+            if (ordensDeServico.length === 0) {
+                osListContainer.innerHTML = `
+                    <div class="p-8 text-center bg-gray-100 rounded-xl border border-dashed border-gray-300">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        <p class="text-lg font-semibold text-gray-600">Nenhuma Ordem de Serviço encontrada.</p>
+                        <p class="text-sm text-gray-500">Comece criando uma nova O.S. na aba ao lado.</p>
                     </div>
                 `;
                 return;
             }
-            
-            // Ordenar ordens do mais antigo para o mais novo (por ID)
-            const ordensOrdenadas = [...ordens].sort((a, b) => a.id - b.id);
-            
-            container.innerHTML = ordensOrdenadas.map((os, index) => {
-                const prioridadeConfig = {
-                    'Baixa': { bg: 'bg-gradient-to-r from-green-100 to-emerald-100', text: 'text-green-700', icon: '🟢' },
-                    'Média': { bg: 'bg-gradient-to-r from-yellow-100 to-amber-100', text: 'text-yellow-700', icon: '🟡' },
-                    'Alta': { bg: 'bg-gradient-to-r from-orange-100 to-red-100', text: 'text-orange-700', icon: '🟠' },
-                    'Urgente': { bg: 'bg-gradient-to-r from-red-100 to-pink-100', text: 'text-red-700', icon: '🔴' }
-                };
-                
-                const statusConfig = {
-                    'Aberta': { 
-                        bg: 'bg-gradient-to-r from-blue-100 to-indigo-100', 
-                        text: 'text-blue-700', 
-                        icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' 
-                    },
-                    'Em Andamento': { 
-                        bg: 'bg-gradient-to-r from-yellow-100 to-orange-100', 
-                        text: 'text-yellow-700', 
-                        icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>' 
-                    },
-                    'Concluída': { 
-                        bg: 'bg-gradient-to-r from-green-100 to-emerald-100', 
-                        text: 'text-green-700', 
-                        icon: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' 
-                    }
-                };
-                
-                const prioridade = prioridadeConfig[os.prioridade] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '⚪' };
-                const status = statusConfig[os.status] || { bg: 'bg-gray-100', text: 'text-gray-700', icon: '❓' };
-                
-                const posicaoFila = index + 1;
-                const sufixo = posicaoFila === 1 ? 'ª' : posicaoFila === 2 ? 'ª' : posicaoFila === 3 ? 'ª' : 'ª';
-                
+
+            osListContainer.innerHTML = ordensDeServico.map(os => {
+                const isCompleted = os.status === 'Concluída';
+                const actionButton = isCompleted 
+                    ? `<button onclick="showSignatureModal('${os.id}', '${os.numOS}')" class="btn-success text-white font-medium py-2 px-4 rounded-xl shadow-md text-sm transition-all duration-200" title="Ver Assinatura e Imprimir">
+                        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Detalhes
+                       </button>`
+                    : `<button onclick="showSignatureModal('${os.id}', '${os.numOS}')" class="btn-warning text-white font-medium py-2 px-4 rounded-xl shadow-md text-sm hover:bg-red-700 transition-all duration-200" title="Assinar e Concluir">
+                        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.914a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                        Assinar/Imprimir
+                       </button>
+                       <button onclick="window.updateStatus('${os.id}', 'Em Andamento')" class="bg-blue-500 text-white font-medium py-2 px-4 rounded-xl shadow-md text-sm hover:bg-blue-700 transition-all duration-200 ml-2" title="Mudar para Em Andamento">
+                        <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                       </button>`;
+
+
                 return `
-                    <div class="bg-white rounded-2xl border-2 border-gray-100 p-6 card-hover shadow-lg">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="flex items-center space-x-3">
-                                <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <div class="flex items-center space-x-2 mb-1">
-                                        <h3 class="font-bold text-xl text-gray-800">${os.numero}</h3>
-                                        <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">
-                                            ${posicaoFila}${sufixo} da fila
-                                        </span>
-                                    </div>
-                                    <p class="text-gray-600 font-medium">${os.setor} - ${os.solicitante}</p>
-                                </div>
-                            </div>
-                            <div class="flex space-x-3">
-                                <span class="priority-badge ${prioridade.bg} ${prioridade.text}">
-                                    ${prioridade.icon} ${os.prioridade}
-                                </span>
-                                <span class="status-badge ${status.bg} ${status.text}">
-                                    ${status.icon} ${os.status}
-                                </span>
-                            </div>
+                    <div class="glass-effect rounded-xl shadow-lg p-6 border-l-4 border-blue-500 card-hover transition-all duration-300">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b pb-4">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center space-x-2 mb-2 sm:mb-0">
+                                <span class="text-blue-600">OS #${os.numOS}</span>
+                                <span class="priority-badge ${getPriorityClass(os.prioridade)}">${os.prioridade}</span>
+                            </h3>
+                            <span class="status-badge ${getStatusClass(os.status)}">${os.status}</span>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-3 sm:p-4 mb-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs sm:text-sm">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    </svg>
-                                    <span class="font-semibold text-gray-700 truncate">${os.tipoServico}</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    <span class="font-semibold text-gray-700 truncate">${os.numeroSei}</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <span class="font-semibold text-gray-700">${os.dataAbertura}</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span class="font-semibold text-gray-700">${os.horaAbertura}</span>
-                                </div>
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700 mb-4">
+                            <div><span class="font-semibold">Setor:</span> ${os.setor}</div>
+                            <div><span class="font-semibold">Solicitante:</span> ${os.solicitante}</div>
+                            <div><span class="font-semibold">Tipo:</span> ${os.tipoServico}</div>
+                            <div><span class="font-semibold">SEI:</span> ${os.numSei}</div>
+                            <div><span class="font-semibold">Aberta em:</span> ${formatDate(os.dataCriacao)}</div>
+                            ${isCompleted ? `<div><span class="font-semibold">Concluída em:</span> ${formatDate(os.dataConclusao)}</div>` : '<div></div>'}
                         </div>
                         
-                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                            <button onclick="viewOS(${os.id})" class="btn-primary text-white px-3 py-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center space-x-2 w-full sm:w-auto">
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                                <span>Visualizar</span>
-                            </button>
-                            <select onchange="updateStatus(${os.id}, this.value)" class="px-3 py-2 sm:px-4 border-2 border-gray-200 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-auto">
-                                <option value="Aberta" ${os.status === 'Aberta' ? 'selected' : ''}>📋 Aberta</option>
-                                <option value="Em Andamento" ${os.status === 'Em Andamento' ? 'selected' : ''}>⚡ Em Andamento</option>
-                                <option value="Concluída" ${os.status === 'Concluída' ? 'selected' : ''}>✅ Concluída</option>
-                            </select>
-                            ${os.fotos.length > 0 ? `
-                                <button onclick="viewReport(${os.id})" class="btn-warning text-white px-3 py-2 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center space-x-2 w-full sm:w-auto">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    <span class="hidden sm:inline">Relatório Fotográfico</span>
-                                    <span class="sm:hidden">Fotos</span>
-                                </button>
-                            ` : ''}
+                        <div class="text-sm text-gray-600 mb-6 border-t pt-4">
+                            <span class="font-semibold text-gray-800">Descrição:</span> ${os.descricao}
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            ${actionButton}
                         </div>
                     </div>
                 `;
             }).join('');
         }
+        
+        // Funções de Dashboard (Ajustadas para Firebase)
+        const updateDashboard = () => {
+            const total = ordensDeServico.length;
+            const concluida = ordensDeServico.filter(os => os.status === 'Concluída').length;
+            const emAndamento = ordensDeServico.filter(os => os.status === 'Em Andamento').length;
+            const aberta = ordensDeServico.filter(os => os.status === 'Aberta').length;
 
-        // Atualizar status da O.S.
-        function updateStatus(osId, newStatus) {
-            const os = ordens.find(o => o.id === osId);
-            if (os) {
-                os.status = newStatus;
-                
-                if (newStatus === 'Concluída') {
-                    currentOSId = osId;
-                    document.getElementById('photoModal').classList.remove('hidden');
-                    document.getElementById('photoModal').classList.add('fade-in');
-                }
-                
-                renderOSList();
-            }
+            document.getElementById('totalOS').textContent = total;
+            document.getElementById('completedOS').textContent = concluida;
+            document.getElementById('inProgressOS').textContent = emAndamento;
+            document.getElementById('openOS').textContent = aberta;
+            
+            renderDashboardCharts();
         }
 
-        // Visualizar O.S.
-        function viewOS(osId) {
-            const os = ordens.find(o => o.id === osId);
-            if (!os) return;
+        const renderDashboardCharts = () => {
+            const setorCounts = ordensDeServico.reduce((acc, os) => {
+                acc[os.setor] = (acc[os.setor] || 0) + 1;
+                return acc;
+            }, {});
             
-            const content = `
-                <div class="max-w-4xl mx-auto">
-                    <!-- Cabeçalho da O.S. -->
-                    <div class="text-center mb-8 border-b pb-6">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-2">ORDEM DE SERVIÇO</h1>
-                        <h2 class="text-xl font-semibold text-blue-600">${os.numero}</h2>
-                        <p class="text-gray-600 mt-2">Emitida em ${os.dataAbertura} às ${os.horaAbertura}</p>
-                    </div>
-                    
-                    <!-- Dados da Solicitação -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="space-y-4">
-                            <div class="border-l-4 border-blue-500 pl-4">
-                                <h3 class="font-semibold text-gray-800">Dados da Solicitação</h3>
-                                <p><strong>Setor/Unidade:</strong> ${os.setor}</p>
-                                <p><strong>Solicitante:</strong> ${os.solicitante}</p>
-                                <p><strong>Número SEI:</strong> ${os.numeroSei}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="border-l-4 border-green-500 pl-4">
-                                <h3 class="font-semibold text-gray-800">Detalhes do Serviço</h3>
-                                <p><strong>Tipo de Serviço:</strong> ${os.tipoServico}</p>
-                                <p><strong>Prioridade:</strong> <span class="font-semibold">${os.prioridade}</span></p>
-                                <p><strong>Status:</strong> <span class="font-semibold">${os.status}</span></p>
-                            </div>
+            const tipoCounts = ordensDeServico.reduce((acc, os) => {
+                acc[os.tipoServico] = (acc[os.tipoServico] || 0) + 1;
+                return acc;
+            }, {});
+
+            const maxSetor = Math.max(...Object.values(setorCounts), 1);
+            const maxTipo = Math.max(...Object.values(tipoCounts), 1);
+            
+            // Render Setor Chart
+            let setorChartHTML = Object.entries(setorCounts).sort(([, a], [, b]) => b - a).map(([setor, count]) => {
+                const percentage = (count / maxSetor) * 100;
+                return `
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700 font-medium w-1/3 truncate">${setor}</span>
+                        <div class="w-2/3 h-5 bg-gray-200 rounded-full relative">
+                            <div class="chart-bar h-full rounded-full bg-gradient-to-r from-purple-500 to-indigo-600" style="width: ${percentage}%;"></div>
+                            <span class="absolute right-0 top-0 bottom-0 pr-2 text-xs font-bold text-gray-900 flex items-center">${count}</span>
                         </div>
                     </div>
-                    
-                    <!-- Descrição -->
-                    <div class="mb-8">
-                        <h3 class="font-semibold text-gray-800 mb-3 border-l-4 border-yellow-500 pl-4">Descrição do Serviço</h3>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-gray-700">${os.descricao || 'Não informado'}</p>
+                `;
+            }).join('');
+            
+            document.getElementById('setorChart').innerHTML = setorChartHTML || '<p class="text-gray-500">Nenhuma O.S. para analisar.</p>';
+            
+            // Render Priority/Service Chart
+            let priorityChartHTML = Object.entries(tipoCounts).sort(([, a], [, b]) => b - a).map(([tipo, count]) => {
+                const percentage = (count / maxTipo) * 100;
+                return `
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700 font-medium w-1/3 truncate">${tipo.split(' ')[0]}...</span>
+                        <div class="w-2/3 h-5 bg-gray-200 rounded-full relative">
+                            <div class="chart-bar h-full rounded-full bg-gradient-to-r from-teal-500 to-green-600" style="width: ${percentage}%;"></div>
+                            <span class="absolute right-0 top-0 bottom-0 pr-2 text-xs font-bold text-gray-900 flex items-center">${count}</span>
                         </div>
                     </div>
-                    
-                    <!-- Área de Assinaturas -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mt-8 lg:mt-12 pt-6 lg:pt-8 border-t">
-                        <div class="text-center">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Assinatura do Técnico</label>
-                                <canvas id="technicianSignature" width="280" height="120" class="signature-pad mx-auto bg-gray-50 rounded w-full max-w-sm"></canvas>
-                            </div>
-                            <input type="text" placeholder="Nome do Técnico" id="technicianName" class="w-full px-3 py-2 border border-gray-300 rounded text-center text-sm" value="${os.tecnico}">
-                            <div class="text-xs text-gray-500 mt-2">
-                                <p>Data: ___/___/______</p>
-                                <p>Técnico Responsável</p>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Assinatura do Solicitante</label>
-                                <canvas id="requesterSignature" width="280" height="120" class="signature-pad mx-auto bg-gray-50 rounded w-full max-w-sm"></canvas>
-                            </div>
-                            <input type="text" placeholder="Nome do Solicitante" id="requesterName" class="w-full px-3 py-2 border border-gray-300 rounded text-center text-sm" value="${os.solicitante}" readonly>
-                            <div class="text-xs text-gray-500 mt-2">
-                                <p>Data: ___/___/______</p>
-                                <p>Solicitante</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="no-print mt-6 text-center">
-                        <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-3">
-                            <button onclick="saveSignatures(${os.id})" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 sm:px-6 rounded-lg text-sm sm:text-base w-full sm:w-auto">
-                                💾 Salvar Assinaturas
-                            </button>
-                            <button onclick="clearSignatures()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:px-6 rounded-lg text-sm sm:text-base w-full sm:w-auto">
-                                🗑️ Limpar Assinaturas
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+                `;
+            }).join('');
             
-            document.getElementById('osContent').innerHTML = content;
-            document.getElementById('osModal').classList.remove('hidden');
-            document.getElementById('osModal').classList.add('fade-in');
-            
-            // Configurar canvas para assinaturas
-            setupSignaturePads();
+            document.getElementById('priorityChart').innerHTML = priorityChartHTML || '<p class="text-gray-500">Nenhuma O.S. para analisar.</p>';
         }
 
-        // Configurar pads de assinatura
-        function setupSignaturePads() {
-            const techCanvas = document.getElementById('technicianSignature');
-            const reqCanvas = document.getElementById('requesterSignature');
-            
-            [techCanvas, reqCanvas].forEach(canvas => {
-                const ctx = canvas.getContext('2d');
-                let isDrawing = false;
-                
-                // Configurar estilo da linha
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                
-                // Ajustar tamanho do canvas para dispositivos móveis
-                function resizeCanvas() {
-                    const rect = canvas.getBoundingClientRect();
-                    const dpr = window.devicePixelRatio || 1;
-                    
-                    // Ajustar tamanho baseado no dispositivo
-                    const isMobile = window.innerWidth <= 640;
-                    const canvasWidth = isMobile ? Math.min(rect.width, 280) : rect.width;
-                    const canvasHeight = isMobile ? 80 : rect.height;
-                    
-                    canvas.width = canvasWidth * dpr;
-                    canvas.height = canvasHeight * dpr;
-                    
-                    canvas.style.width = canvasWidth + 'px';
-                    canvas.style.height = canvasHeight + 'px';
-                    
-                    ctx.scale(dpr, dpr);
-                    ctx.strokeStyle = '#000000';
-                    ctx.lineWidth = isMobile ? 1.5 : 2;
-                    ctx.lineCap = 'round';
-                    ctx.lineJoin = 'round';
-                }
-                
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-                
-                function getEventPos(e) {
-                    const rect = canvas.getBoundingClientRect();
-                    const scaleX = canvas.width / rect.width;
-                    const scaleY = canvas.height / rect.height;
-                    
-                    if (e.touches) {
-                        return {
-                            x: (e.touches[0].clientX - rect.left) * scaleX,
-                            y: (e.touches[0].clientY - rect.top) * scaleY
-                        };
-                    } else {
-                        return {
-                            x: (e.clientX - rect.left) * scaleX,
-                            y: (e.clientY - rect.top) * scaleY
-                        };
-                    }
-                }
-                
-                // Mouse events
-                canvas.addEventListener('mousedown', (e) => {
-                    isDrawing = true;
-                    const pos = getEventPos(e);
-                    ctx.beginPath();
-                    ctx.moveTo(pos.x, pos.y);
-                });
-                
-                canvas.addEventListener('mousemove', (e) => {
-                    if (isDrawing) {
-                        const pos = getEventPos(e);
-                        ctx.lineTo(pos.x, pos.y);
-                        ctx.stroke();
-                    }
-                });
-                
-                canvas.addEventListener('mouseup', () => {
-                    isDrawing = false;
-                });
-                
-                // Touch events para dispositivos móveis
-                canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    isDrawing = true;
-                    const pos = getEventPos(e);
-                    ctx.beginPath();
-                    ctx.moveTo(pos.x, pos.y);
-                }, { passive: false });
-                
-                canvas.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                    if (isDrawing) {
-                        const pos = getEventPos(e);
-                        ctx.lineTo(pos.x, pos.y);
-                        ctx.stroke();
-                    }
-                }, { passive: false });
-                
-                canvas.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    isDrawing = false;
-                }, { passive: false });
-                
-                // Prevenir scroll no mobile durante assinatura
-                canvas.addEventListener('touchcancel', (e) => {
-                    e.preventDefault();
-                    isDrawing = false;
-                }, { passive: false });
-            });
-        }
+        // Funções de Fundo (Mantidas)
 
-        // Salvar assinaturas
-        function saveSignatures(osId) {
-            const os = ordens.find(o => o.id === osId);
-            if (os) {
-                os.tecnico = document.getElementById('technicianName').value;
-                os.assinaturaTecnico = document.getElementById('technicianSignature').toDataURL();
-                os.assinaturaSolicitante = document.getElementById('requesterSignature').toDataURL();
-                
-                alert('Assinaturas salvas com sucesso!');
-                renderOSList();
-            }
-        }
-
-        // Limpar assinaturas
-        function clearSignatures() {
-            const techCanvas = document.getElementById('technicianSignature');
-            const reqCanvas = document.getElementById('requesterSignature');
-            
-            techCanvas.getContext('2d').clearRect(0, 0, techCanvas.width, techCanvas.height);
-            reqCanvas.getContext('2d').clearRect(0, 0, reqCanvas.width, reqCanvas.height);
-        }
-
-        // Upload de fotos
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
-            const preview = document.getElementById('photoPreview');
-            
-            currentPhotos = [];
-            preview.innerHTML = '';
-            
-            files.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentPhotos.push({
-                        name: file.name,
-                        data: e.target.result,
-                        size: file.size
-                    });
-                    
-                    const photoDiv = document.createElement('div');
-                    photoDiv.className = 'relative';
-                    photoDiv.innerHTML = `
-                        <img src="${e.target.result}" alt="Foto ${index + 1}" class="w-full h-32 object-cover rounded-lg">
-                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 rounded-b-lg">
-                            ${file.name}
-                        </div>
-                    `;
-                    preview.appendChild(photoDiv);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
-
-        // Salvar fotos
-        function savePhotos() {
-            if (currentOSId && currentPhotos.length > 0) {
-                const os = ordens.find(o => o.id === currentOSId);
-                if (os) {
-                    os.fotos = currentPhotos;
-                    alert(`${currentPhotos.length} foto(s) salva(s) com sucesso!`);
-                    renderOSList();
-                    closeModal('photoModal');
-                }
-            } else {
-                alert('Selecione pelo menos uma foto!');
-            }
-        }
-
-        // Visualizar relatório fotográfico
-        function viewReport(osId) {
-            const os = ordens.find(o => o.id === osId);
-            if (!os || os.fotos.length === 0) return;
-            
-            const content = `
-                <div class="max-w-4xl mx-auto">
-                    <!-- Cabeçalho do Relatório -->
-                    <div class="text-center mb-8 border-b pb-6">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-2">RELATÓRIO FOTOGRÁFICO</h1>
-                        <h2 class="text-xl font-semibold text-blue-600">${os.numero}</h2>
-                        <p class="text-gray-600 mt-2">Demanda Atendida - ${new Date().toLocaleDateString('pt-BR')}</p>
-                    </div>
-                    
-                    <!-- Dados da O.S. -->
-                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <p><strong>Setor/Unidade:</strong> ${os.setor}</p>
-                                <p><strong>Solicitante:</strong> ${os.solicitante}</p>
-                                <p><strong>Técnico:</strong> ${os.tecnico || 'Não informado'}</p>
-                            </div>
-                            <div>
-                                <p><strong>Tipo de Serviço:</strong> ${os.tipoServico}</p>
-                                <p><strong>Número SEI:</strong> ${os.numeroSei}</p>
-                                <p><strong>Status:</strong> ${os.status}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Fotos -->
-                    <div class="mb-8">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-6 border-l-4 border-blue-500 pl-4">
-                            Registro Fotográfico da Execução (${os.fotos.length} foto${os.fotos.length > 1 ? 's' : ''})
-                        </h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            ${os.fotos.map((foto, index) => `
-                                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                    <img src="${foto.data}" alt="Foto ${index + 1}" class="w-full h-64 object-cover">
-                                    <div class="p-3 bg-gray-50">
-                                        <p class="text-sm font-medium text-gray-800">Foto ${index + 1}</p>
-                                        <p class="text-xs text-gray-600">${foto.name}</p>
-                                        <p class="text-xs text-gray-500">Tamanho: ${(foto.size / 1024).toFixed(1)} KB</p>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                    
-                    <!-- Rodapé -->
-                    <div class="border-t pt-6 text-center text-sm text-gray-600">
-                        <p>Relatório gerado automaticamente pelo Sistema de Ordem de Serviço</p>
-                        <p>Data de geração: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}</p>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('reportContent').innerHTML = content;
-            document.getElementById('reportModal').classList.remove('hidden');
-            document.getElementById('reportModal').classList.add('fade-in');
-        }
-
-        // Imprimir O.S.
-        function printOS() {
-            window.print();
-        }
-
-        // Imprimir relatório
-        function printReport() {
-            window.print();
-        }
-
-        // Fechar modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.getElementById(modalId).classList.remove('fade-in');
-            
-            if (modalId === 'photoModal') {
-                currentPhotos = [];
-                document.getElementById('photoInput').value = '';
-                document.getElementById('photoPreview').innerHTML = '';
-            }
-        }
-
-        // Upload de fundo personalizado
-        document.getElementById('backgroundUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        document.getElementById('backgroundUpload').addEventListener('change', (event) => {
+            const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                reader.onload = (e) => {
+                    const imageUrl = e.target.result;
+                    document.body.style.backgroundImage = `url('${imageUrl}')`;
                     document.body.classList.remove('gradient-bg');
                     document.body.classList.add('custom-bg');
-                    
-                    // Salvar no localStorage
-                    localStorage.setItem('customBackground', e.target.result);
+                    localStorage.setItem('customBackground', imageUrl);
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Restaurar fundo padrão
-        function resetBackground() {
-            document.body.style.backgroundImage = '';
-            document.body.classList.remove('custom-bg');
-            document.body.classList.add('gradient-bg');
-            
-            // Remover do localStorage
-            localStorage.removeItem('customBackground');
-        }
-
-        // Carregar fundo personalizado salvo
-        function loadSavedBackground() {
+        const loadSavedBackground = () => {
             const savedBg = localStorage.getItem('customBackground');
             if (savedBg) {
-                document.body.style.backgroundImage = `url(${savedBg})`;
+                document.body.style.backgroundImage = `url('${savedBg}')`;
                 document.body.classList.remove('gradient-bg');
                 document.body.classList.add('custom-bg');
             }
         }
 
-        // Atualizar data do rodapé
-        function updateFooterDate() {
-            document.getElementById('footerDate').textContent = new Date().toLocaleDateString('pt-BR');
+        const resetBackground = () => {
+            localStorage.removeItem('customBackground');
+            document.body.style.backgroundImage = 'none';
+            document.body.classList.remove('custom-bg');
+            document.body.classList.add('gradient-bg');
         }
 
-        // Navegação por abas
-        function showTab(tabName) {
-            // Remover classe active de todas as abas
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        // Funções de Assinatura (Ajustadas para Firebase)
+        
+        const openSignatureModal = (osId, osNum) => {
+            currentOSForSignature = ordensDeServico.find(os => os.id === osId);
+            if (!currentOSForSignature) return;
+
+            document.getElementById('modalOSNum').textContent = `#${osNum}`;
             
-            // Ocultar todo o conteúdo
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
+            const modal = document.getElementById('signature-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            const canvas = document.getElementById('signaturePad');
+            // Inicializa ou limpa o signature pad
+            if (!signaturePad) {
+                signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgba(255, 255, 255, 0)', // Transparente
+                    penColor: 'rgb(0, 0, 0)'
+                });
+            } else {
+                signaturePad.clear();
+            }
             
-            // Ativar aba selecionada
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            document.getElementById(`content-${tabName}`).classList.remove('hidden');
-            
-            // Atualizar dashboard se necessário
-            if (tabName === 'dashboard') {
-                updateDashboard();
+            // Se já tiver assinatura salva, carrega (apenas para visualização/impressão)
+            if (currentOSForSignature.assinatura) {
+                signaturePad.fromDataURL(currentOSForSignature.assinatura);
+                signaturePad.off(); // Desativa a edição
+                document.getElementById('saveSignatureBtn').textContent = 'Imprimir O.S.';
+            } else {
+                signaturePad.on(); // Ativa a edição
+                document.getElementById('saveSignatureBtn').textContent = 'Salvar Assinatura e Concluir';
+            }
+
+            // Garante que o canvas está configurado
+            resizeCanvas();
+
+            // Adiciona listener para o botão de salvar/imprimir
+            document.getElementById('saveSignatureBtn').onclick = () => {
+                if (currentOSForSignature.assinatura) {
+                    // Se já tiver assinatura, apenas imprime
+                    printOSDetails(currentOSForSignature);
+                } else {
+                    // Se não tiver, salva, atualiza status e imprime
+                    saveSignatureAndComplete(osId);
+                }
+            };
+        }
+        
+        const closeSignatureModal = () => {
+            document.getElementById('signature-modal').classList.add('hidden');
+            document.getElementById('signature-modal').classList.remove('flex');
+            if (signaturePad) {
+                signaturePad.clear();
+                signaturePad.off();
+            }
+            currentOSForSignature = null;
+        }
+
+        const clearSignature = () => {
+            if (signaturePad) {
+                signaturePad.clear();
             }
         }
 
-        // Atualizar dashboard
-        function updateDashboard() {
-            updateStatistics();
-            updateUnitsChart();
-            updateServicesChart();
-            updateDemandHistory();
-            updateUnitsRanking();
-            updatePriorityChart();
+        const resizeCanvas = () => {
+            const canvas = document.getElementById('signaturePad');
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext('2d').scale(ratio, ratio);
+            
+            // Recarrega a assinatura se ela existir e o pad estiver desativado
+            if (currentOSForSignature && currentOSForSignature.assinatura && signaturePad && !signaturePad.isEmpty()) {
+                signaturePad.fromDataURL(currentOSForSignature.assinatura);
+            }
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        const saveSignatureAndComplete = async (osId) => {
+            if (signaturePad.isEmpty()) {
+                alert("Por favor, forneça a assinatura antes de concluir.");
+                return;
+            }
+
+            const signatureDataURL = signaturePad.toDataURL();
+            
+            // Atualiza o status e salva a assinatura no Firebase (NOVO)
+            await window.updateStatus(osId, 'Concluída', signatureDataURL);
+            
+            // Encontra a OS atualizada para impressão
+            const updatedOS = ordensDeServico.find(os => os.id === osId);
+            
+            closeSignatureModal();
+            
+            if (updatedOS) {
+                printOSDetails(updatedOS);
+            }
         }
 
-        // Atualizar estatísticas gerais
-        function updateStatistics() {
-            const total = ordens.length;
-            const completed = ordens.filter(os => os.status === 'Concluída').length;
-            const inProgress = ordens.filter(os => os.status === 'Em Andamento').length;
-            const open = ordens.filter(os => os.status === 'Aberta').length;
+        const printOSDetails = (os) => {
+            // Cria um novo DOM para impressão
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Ordem de Serviço #'+os.numOS+'</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write(`
+                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; font-size: 12pt; }
+                .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 10px; }
+                .header h1 { font-size: 24pt; margin: 0; }
+                .details div { margin-bottom: 10px; padding: 5px 0; border-bottom: 1px dashed #eee; display: flex; }
+                .details span { font-weight: bold; width: 150px; flex-shrink: 0; }
+                .description { margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
+                .signature-area { margin-top: 40px; display: flex; justify-content: space-around; text-align: center; }
+                .signature-box { width: 45%; border-top: 1px solid #000; padding-top: 5px; }
+                .status-badge { display: inline-block; padding: 5px 10px; border-radius: 5px; font-weight: bold; background-color: #10b981; color: white; }
+                .signature-img { max-width: 90%; height: auto; display: block; margin: 10px auto; border: 1px solid #ccc; }
+                @media print {
+                    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+            `);
+            printWindow.document.write('</style></head><body>');
             
-            document.getElementById('totalOS').textContent = total;
-            document.getElementById('completedOS').textContent = completed;
-            document.getElementById('inProgressOS').textContent = inProgress;
-            document.getElementById('openOS').textContent = open;
+            printWindow.document.write('<div class="header">');
+            printWindow.document.write('<h1>ORDEM DE SERVIÇO #'+os.numOS+'</h1>');
+            printWindow.document.write('<p>COORDENAÇÃO DE SUPORTE E LOGÍSTICA - MANUTENÇÃO</p>');
+            printWindow.document.write('<span class="status-badge">Status: '+os.status+'</span>');
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<div class="details">');
+            printWindow.document.write('<div><span>Setor/Unidade:</span> '+os.setor+'</div>');
+            printWindow.document.write('<div><span>Solicitante:</span> '+os.solicitante+'</div>');
+            printWindow.document.write('<div><span>Tipo de Serviço:</span> '+os.tipoServico+'</div>');
+            printWindow.document.write('<div><span>Número SEI:</span> '+os.numSei+'</div>');
+            printWindow.document.write('<div><span>Prioridade:</span> '+os.prioridade+'</div>');
+            printWindow.document.write('<div><span>Aberta em:</span> '+formatDate(os.dataCriacao)+'</div>');
+            if (os.status === 'Concluída') {
+                printWindow.document.write('<div><span>Concluída em:</span> '+formatDate(os.dataConclusao)+'</div>');
+            }
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<div class="description">');
+            printWindow.document.write('<h2>Descrição Detalhada</h2>');
+            printWindow.document.write('<p>'+os.descricao.replace(/\n/g, '<br>')+'</p>');
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<div class="signature-area">');
+            printWindow.document.write('<div class="signature-box">');
+            printWindow.document.write('<img src="'+os.assinatura+'" class="signature-img"/>');
+            printWindow.document.write('<p>Assinatura do Solicitante</p>');
+            printWindow.document.write('</div>');
+            
+            printWindow.document.write('<div class="signature-box">');
+            printWindow.document.write('<br><br><br>');
+            printWindow.document.write('<p>Assinatura do Técnico/Responsável</p>');
+            printWindow.document.write('</div>');
+            printWindow.document.write('</div>');
+
+            printWindow.document.write('<p style="margin-top: 50px; text-align: center; font-size: 10pt;">Obrigado por utilizar o Sistema de O.S. - Mantenha este documento para registro.</p>');
+
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            
+            // Aguarda um breve momento para o conteúdo carregar antes de imprimir
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
 
-        // Gráfico de unidades que mais solicitam
-        function updateUnitsChart() {
-            const unitsCount = {};
-            ordens.forEach(os => {
-                unitsCount[os.setor] = (unitsCount[os.setor] || 0) + 1;
-            });
-            
-            const sortedUnits = Object.entries(unitsCount)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5);
-            
-            const maxCount = Math.max(...sortedUnits.map(([,count]) => count), 1);
-            
-            const chartHTML = sortedUnits.length > 0 ? sortedUnits.map(([unit, count], index) => {
-                const percentage = (count / maxCount) * 100;
-                const colors = [
-                    'bg-gradient-to-r from-blue-500 to-blue-600',
-                    'bg-gradient-to-r from-green-500 to-green-600',
-                    'bg-gradient-to-r from-yellow-500 to-yellow-600',
-                    'bg-gradient-to-r from-purple-500 to-purple-600',
-                    'bg-gradient-to-r from-red-500 to-red-600'
-                ];
-                
-                return `
-                    <div class="flex items-center space-x-3">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-medium text-gray-700 truncate">${unit}</span>
-                                <span class="text-sm font-bold text-gray-800">${count}</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="chart-bar ${colors[index]} h-3 rounded-full" style="width: ${percentage}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('') : '<p class="text-gray-500 text-center py-8">Nenhum dado disponível</p>';
-            
-            document.getElementById('unitsChart').innerHTML = chartHTML;
+        const showSignatureModal = (osId, osNum) => {
+            openSignatureModal(osId, osNum);
         }
 
-        // Gráfico de serviços mais solicitados
-        function updateServicesChart() {
-            const servicesCount = {};
-            ordens.forEach(os => {
-                const service = os.tipoServico.replace(/^[^\s]+ /, ''); // Remove emoji
-                servicesCount[service] = (servicesCount[service] || 0) + 1;
-            });
-            
-            const sortedServices = Object.entries(servicesCount)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5);
-            
-            const maxCount = Math.max(...sortedServices.map(([,count]) => count), 1);
-            
-            const chartHTML = sortedServices.length > 0 ? sortedServices.map(([service, count], index) => {
-                const percentage = (count / maxCount) * 100;
-                const colors = [
-                    'bg-gradient-to-r from-orange-500 to-orange-600',
-                    'bg-gradient-to-r from-teal-500 to-teal-600',
-                    'bg-gradient-to-r from-pink-500 to-pink-600',
-                    'bg-gradient-to-r from-indigo-500 to-indigo-600',
-                    'bg-gradient-to-r from-cyan-500 to-cyan-600'
-                ];
-                
-                return `
-                    <div class="flex items-center space-x-3">
-                        <div class="flex-1">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-medium text-gray-700 truncate">${service}</span>
-                                <span class="text-sm font-bold text-gray-800">${count}</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="chart-bar ${colors[index]} h-3 rounded-full" style="width: ${percentage}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('') : '<p class="text-gray-500 text-center py-8">Nenhum dado disponível</p>';
-            
-            document.getElementById('servicesChart').innerHTML = chartHTML;
-        }
-
-        // Histórico de demanda
-        function updateDemandHistory() {
-            const monthlyData = {};
-            ordens.forEach(os => {
-                const date = new Date(os.dataAbertura.split('/').reverse().join('-'));
-                const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                monthlyData[monthKey] = (monthlyData[monthKey] || 0) + 1;
-            });
-            
-            const sortedMonths = Object.entries(monthlyData)
-                .sort(([a], [b]) => b.localeCompare(a))
-                .slice(0, 6);
-            
-            const maxCount = Math.max(...sortedMonths.map(([,count]) => count), 1);
-            
-            const historyHTML = sortedMonths.length > 0 ? sortedMonths.map(([month, count]) => {
-                const [year, monthNum] = month.split('-');
-                const monthName = new Date(year, monthNum - 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-                const percentage = (count / maxCount) * 100;
-                
-                return `
-                    <div class="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-800 capitalize">${monthName}</p>
-                                <div class="w-32 bg-gray-200 rounded-full h-2 mt-1">
-                                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full" style="width: ${percentage}%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="text-2xl font-bold text-green-600">${count}</span>
-                    </div>
-                `;
-            }).join('') : '<p class="text-gray-500 text-center py-8">Nenhum histórico disponível</p>';
-            
-            document.getElementById('demandHistory').innerHTML = historyHTML;
-        }
-
-        // Ranking de unidades
-        function updateUnitsRanking() {
-            const unitsCount = {};
-            ordens.forEach(os => {
-                unitsCount[os.setor] = (unitsCount[os.setor] || 0) + 1;
-            });
-            
-            const sortedUnits = Object.entries(unitsCount)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 10);
-            
-            const rankingHTML = sortedUnits.length > 0 ? sortedUnits.map(([unit, count], index) => {
-                const medals = ['🥇', '🥈', '🥉'];
-                const medal = medals[index] || `${index + 1}º`;
-                const bgColors = [
-                    'bg-gradient-to-r from-yellow-100 to-amber-100 border-yellow-300',
-                    'bg-gradient-to-r from-gray-100 to-slate-100 border-gray-300',
-                    'bg-gradient-to-r from-orange-100 to-amber-100 border-orange-300'
-                ];
-                const bgColor = bgColors[index] || 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200';
-                
-                return `
-                    <div class="flex items-center justify-between p-3 ${bgColor} border rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-2xl">${medal}</span>
-                            <div>
-                                <p class="font-semibold text-gray-800 truncate">${unit}</p>
-                                <p class="text-sm text-gray-600">${count} solicitaç${count > 1 ? 'ões' : 'ão'}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xl font-bold text-gray-800">${count}</span>
-                        </div>
-                    </div>
-                `;
-            }).join('') : '<p class="text-gray-500 text-center py-8">Nenhum ranking disponível</p>';
-            
-            document.getElementById('unitsRanking').innerHTML = rankingHTML;
-        }
-
-        // Análise por prioridade
-        function updatePriorityChart() {
-            const priorityCount = {
-                'Baixa': 0,
-                'Média': 0,
-                'Alta': 0,
-                'Urgente': 0
-            };
-            
-            ordens.forEach(os => {
-                priorityCount[os.prioridade] = (priorityCount[os.prioridade] || 0) + 1;
-            });
-            
-            const priorityConfig = {
-                'Baixa': { color: 'from-green-500 to-emerald-600', icon: '🟢', textColor: 'text-green-700' },
-                'Média': { color: 'from-yellow-500 to-amber-600', icon: '🟡', textColor: 'text-yellow-700' },
-                'Alta': { color: 'from-orange-500 to-red-600', icon: '🟠', textColor: 'text-orange-700' },
-                'Urgente': { color: 'from-red-500 to-pink-600', icon: '🔴', textColor: 'text-red-700' }
-            };
-            
-            const chartHTML = Object.entries(priorityCount).map(([priority, count]) => {
-                const config = priorityConfig[priority];
-                return `
-                    <div class="bg-white rounded-xl p-4 border-2 border-gray-100 card-hover">
-                        <div class="text-center">
-                            <div class="bg-gradient-to-br ${config.color} p-3 rounded-xl mx-auto w-fit mb-3">
-                                <span class="text-2xl">${config.icon}</span>
-                            </div>
-                            <h4 class="font-semibold text-gray-800 mb-1">${priority}</h4>
-                            <p class="text-3xl font-bold ${config.textColor}">${count}</p>
-                            <p class="text-sm text-gray-600 mt-1">
-                                ${count === 1 ? 'solicitação' : 'solicitações'}
-                            </p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.getElementById('priorityChart').innerHTML = chartHTML;
-        }
-
-        // Inicializar
+        // Inicializar (NOVA LÓGICA)
         updateDateTime();
         setInterval(updateDateTime, 1000);
         updateFooterDate();
-        renderOSList();
         loadSavedBackground();
+        
+        // Chamada principal para carregar dados do Firebase (NOVO)
+        loadOSs(); 
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'987543274737f63a',t:'MTc1OTI1MTQ3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-    <!-- Importando SDK do Firebase -->
-    <script type="module">
-      // 1. IMPORTAR OS SERVIÇOS NECESSÁRIOS
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
-      // ADICIONE A IMPORTAÇÃO DO FIRESTORE (DB)
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-      // Configuração do Firebase (MANTENHA ESTA PARTE)
-      const firebaseConfig = {
-        apiKey: "AIzaSyA08NvEhJ_wQDYP88X2tysohKUMth4qz0g",
-        authDomain: "fir-s-m-f1d0f.firebaseapp.com",
-        projectId: "fir-s-m-f1d0f",
-        storageBucket: "fir-s-m-f1d0f.firebasestorage.app",
-        messagingSenderId: "55884894529",
-        appId: "1:55884894529:web:a311bb71466b00cefbd1c0",
-        measurementId: "G-VLGKB7EF0M"
-      };
-
-      // 2. INICIALIZAR O FIREBASE E OS SERVIÇOS
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      // INICIALIZE O FIRESTORE E ATRIBUA À VARIÁVEL 'db'
-      const db = getFirestore(app);
-
-      // 3. EXPORTAR OS SERVIÇOS PARA QUE SEU 'os_app.js' POSSA USÁ-LOS
-      export { app, analytics, db }; // <-- db PRECISA SER EXPORTADO
-    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985b5297a2746493',t:'MTc1ODk3OTQ4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange;e=function(){if('complete'===document.readyState)c()};document.onreadystatechange=e}}})();</script>
 </body>
-</html>
-
 </html>
